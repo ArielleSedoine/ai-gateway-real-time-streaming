@@ -224,3 +224,468 @@ Once deployed:
 - Simplified deployment
 - Pay-per-use pricing model
 - Zero server management
+
+---
+
+# 🔄 System Workflow
+
+The following sequence diagram illustrates how audio is processed from the client to the AI service and back in real time.
+
+```mermaid
+sequenceDiagram
+
+participant Client
+participant AudioPreprocessing
+participant Gateway
+participant AITranslation
+
+Client->>AudioPreprocessing: Capture microphone audio
+AudioPreprocessing->>Gateway: Stream Opus audio
+Gateway->>Gateway: Decode Opus → PCM
+Gateway->>AITranslation: Forward PCM audio
+AITranslation-->>Gateway: Return translated PCM
+Gateway->>Gateway: Encode PCM → Opus
+Gateway-->>AudioPreprocessing: Stream translated audio
+AudioPreprocessing-->>Client: Play translated audio
+```
+
+---
+
+# ⚙️ Technology Stack
+
+| Category | Technology |
+|------------|------------|
+| Programming Language | Python 3.11 |
+| Backend Framework | FastAPI |
+| Communication | WebSockets |
+| Audio Codec | Opus |
+| Audio Format | PCM |
+| Streaming | WebRTC |
+| Containerization | Docker |
+| Cloud Platform | Google Cloud Platform |
+| Deployment | Google Cloud Run |
+| Container Registry | Artifact Registry |
+| Build Service | Google Cloud Build |
+| Architecture | Cloud Native |
+| Concurrency | AsyncIO |
+| API Protocol | REST + WebSockets |
+
+---
+
+# 📂 Repository Structure
+
+```text
+ai-gateway-real-time-streaming/
+│
+├── diagrams/
+│   ├── architecture.png
+│   ├── cloud_run_deployment.png
+│   └── data_flow.png
+│
+├── docs/
+│   ├── architecture.md
+│   ├── deployment.md
+│   ├── api.md
+│   └── troubleshooting.md
+│
+├── src/
+│   ├── api/
+│   ├── audio/
+│   ├── gateway/
+│   ├── services/
+│   ├── utils/
+│   └── main.py
+│
+├── tests/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+└── LICENSE
+```
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
+
+Before running this project, make sure you have installed:
+
+- Python 3.11 or later
+- Git
+- Docker Desktop
+- Google Cloud SDK (optional for deployment)
+- A Google Cloud Project
+- Google Cloud Run enabled
+
+---
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/ArielleSedoine/ai-gateway-real-time-streaming.git
+
+cd ai-gateway-real-time-streaming
+```
+
+---
+
+## Create a Virtual Environment
+
+### Windows
+
+```bash
+python -m venv .venv
+
+.venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv .venv
+
+source .venv/bin/activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install --upgrade pip
+
+pip install -r requirements.txt
+```
+
+---
+
+## Project Configuration
+
+If environment variables are required, create a `.env` file.
+
+Example:
+
+```env
+HOST=0.0.0.0
+PORT=8080
+LOG_LEVEL=INFO
+```
+
+---
+
+## Run the Application
+
+```bash
+python src/main.py
+```
+
+The API will be available at:
+
+```
+http://localhost:8080
+```
+
+---
+
+# 🐳 Docker
+
+## Build the Docker Image
+
+```bash
+docker build -t ai-gateway .
+```
+
+---
+
+## Run the Container
+
+```bash
+docker run -p 8080:8080 ai-gateway
+```
+
+The application will be accessible at:
+
+```
+http://localhost:8080
+```
+
+---
+
+## Verify Running Containers
+
+```bash
+docker ps
+```
+
+---
+
+## Stop the Container
+
+```bash
+docker stop <container_id>
+```
+
+---
+
+# ☁️ Deploy to Google Cloud Run
+
+## Step 1 — Authenticate
+
+```bash
+gcloud auth login
+```
+
+---
+
+## Step 2 — Select Your Project
+
+```bash
+gcloud config set project verse-dev-433901
+```
+
+---
+
+## Step 3 — Build the Container Image
+
+```bash
+gcloud builds submit --tag gcr.io/verse-dev-433901/ai-gateway
+```
+
+---
+
+## Step 4 — Deploy to Cloud Run
+
+```bash
+gcloud run deploy ai-gateway-up01 \
+    --image gcr.io/verse-dev-433901/ai-gateway \
+    --platform managed \
+    --region us-east4 \
+    --allow-unauthenticated
+```
+
+---
+
+## Step 5 — Access the Service
+
+After deployment, Google Cloud Run generates a public HTTPS endpoint similar to:
+
+```
+https://ai-gateway-xxxxxxxx-uc.a.run.app/health
+```
+
+Clients can establish secure WebSocket connections using this endpoint.
+
+---
+
+# 📊 Deployment Highlights
+
+The deployment architecture provides:
+
+- Fully managed serverless infrastructure
+- Automatic horizontal scaling
+- Zero server maintenance
+- Stateless service deployment
+- High availability
+- Secure HTTPS endpoints
+- Pay-per-use pricing
+- Seamless Docker integration
+
+---
+
+# 📈 Project Roadmap
+
+The project will continue evolving with new capabilities and cloud-native improvements.
+
+## Core Features
+
+- [x] Real-time audio streaming
+- [x] Full-duplex WebSocket communication
+- [x] Opus ↔ PCM audio transcoding
+- [x] FastAPI asynchronous backend
+- [x] Docker containerization
+- [x] Google Cloud Run deployment
+- [x] Cloud-native architecture
+
+---
+
+## Planned Features
+
+- [ ] Authentication and authorization
+- [ ] Session management
+- [ ] Automatic reconnection
+- [ ] Multiple concurrent streaming sessions
+- [ ] Voice Activity Detection (VAD)
+- [ ] Audio quality optimization
+- [ ] Configurable audio codecs
+- [ ] Streaming metrics dashboard
+
+---
+
+## DevOps
+
+- [ ] GitHub Actions CI/CD
+- [ ] Automated Docker image builds
+- [ ] Continuous deployment to Cloud Run
+- [ ] Infrastructure as Code (Terraform)
+- [ ] Environment configuration management
+
+---
+
+## Monitoring & Observability
+
+- [ ] Cloud Logging integration
+- [ ] Cloud Monitoring dashboards
+- [ ] Prometheus metrics
+- [ ] Grafana dashboards
+- [ ] Distributed tracing
+- [ ] Error reporting
+
+---
+
+## Testing
+
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] End-to-end tests
+- [ ] Performance benchmarking
+- [ ] Load testing
+- [ ] Stress testing
+
+---
+
+## Scalability
+
+- [ ] Horizontal autoscaling optimization
+- [ ] Session affinity
+- [ ] Multi-region deployment
+- [ ] High availability improvements
+- [ ] Fault tolerance strategies
+
+---
+
+# 💡 Future Improvements
+
+Future versions of AI Gateway may include:
+
+- AI model selection at runtime
+- Support for multiple AI providers
+- Automatic language detection
+- Speech emotion recognition
+- Speaker identification
+- Real-time subtitles
+- Audio recording
+- Persistent session storage
+- WebRTC optimization
+- Kubernetes deployment (GKE) + Load Balancer
+- Multi-cloud deployment
+- Advanced observability
+- Distributed caching
+- Rate limiting
+- API versioning
+
+---
+
+# 🎯 Use Cases
+
+AI Gateway can serve as the backend foundation for applications such as:
+
+- 🌍 Real-time multilingual communication
+- 🎧 Live audio translation
+- 🤖 AI-powered voice assistants
+- 📞 Contact center solutions
+- 🎙️ Voice-enabled AI applications
+- 🎓 Online learning platforms
+- 🏥 Telemedicine communication
+- 💼 International business meetings
+- 🎮 Multiplayer voice communication
+- 📡 Real-time speech processing platforms
+
+---
+
+# 📊 System Characteristics
+
+| Property | Description |
+|----------|-------------|
+| Architecture | Cloud Native |
+| Backend | Asynchronous FastAPI |
+| Communication | Full-duplex WebSockets |
+| Deployment | Google Cloud Run |
+| Containerization | Docker |
+| Scalability | Horizontal |
+| Infrastructure | Serverless |
+| Audio Pipeline | Streaming |
+| Latency | Low |
+| Design | Stateless |
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+If you would like to improve this project, feel free to:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Push your branch.
+5. Open a Pull Request.
+
+Bug reports, feature requests, and suggestions are always appreciated.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+See the **LICENSE** file for more information.
+
+---
+
+# 👩🏾‍💻 Author
+
+## Arielle Sedoine
+
+**Software Engineer | Cloud Engineer | Backend Developer**
+
+Passionate about building scalable cloud-native systems, distributed backend services, and AI-powered applications.
+
+### Connect with me
+
+📧 **Email**
+
+notouom777@gmail.com
+
+💼 **LinkedIn**
+
+https://www.linkedin.com/in/arielle-60178832a/
+
+🐙 **GitHub**
+
+https://github.com/ArielleSedoine
+
+---
+
+# ⭐ Support the Project
+
+If you found this project useful or interesting:
+
+- ⭐ Star this repository
+- 🍴 Fork the project
+- 🐛 Report issues
+- 💡 Suggest new features
+- 🤝 Contribute improvements
+
+Your support helps improve the project and encourages future development.
+
+---
+
+<p align="center">
+
+Made with ❤️ using Python, FastAPI, Docker and Google Cloud Run.
+
+</p>
