@@ -20,6 +20,13 @@
 
 ---
 
+# 🎬 Live Demo
+
+<p align="center">
+  <img src="./demo.gif" alt="AI Gateway Live Demo" width="950">
+</p>
+
+---
 # 📑 Table of Contents
 
 - [Project Overview](#-project-overview)
