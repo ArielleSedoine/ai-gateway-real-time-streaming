@@ -23,7 +23,8 @@
 # 🎬 Live Demo
 
 <p align="center">
-  <img src="./demo.gif" alt="AI Gateway Live Demo" width="950">
+  <img src="./assets/demo1.gif" alt="AI Gateway Demo" width="450">
+  <img src="./assets/demo2_realtime.gif" alt="AI Gateway Real-Time Streaming Demo" width="450">
 </p>
 
 ---
