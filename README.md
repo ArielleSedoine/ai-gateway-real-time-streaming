@@ -672,9 +672,9 @@ notouom777@gmail.com
 
 https://www.linkedin.com/in/arielle-60178832a/
 
-🐙 **GitHub**
+🌐 **Website**
 
-https://github.com/ArielleSedoine
+https://arielle-sedoineapp-vosyn2.vercel.app/
 
 ---
 
